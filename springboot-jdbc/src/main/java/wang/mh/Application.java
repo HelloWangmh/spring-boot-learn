@@ -14,7 +14,7 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class,args);
-        testConnect();
+        batchInsert();
 
     }
 
@@ -34,4 +34,13 @@ public class Application {
         System.out.println("users:"+num2);
 
     }
+
+    public static void batchInsert(){
+
+        //mysql
+        JdbcTemplate primary = JDBCTemplate.getPrimary();
+        String sql = "INSERT INTO `testft`.`zzx_articles` (`id`, `title`, `content`, `author`, `title_fc`, `content_fc`) VALUES (NULL, NULL, NULL, NULL, '北京精神', '创新 爱国 包容 厚颜');";
+        primary.batchUpdate(sql,sql);
+    }
+
 }
