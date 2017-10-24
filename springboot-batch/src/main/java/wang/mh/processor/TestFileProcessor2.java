@@ -8,11 +8,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @StepScope
-public class TestFileProcessor implements ItemProcessor<String,Void> {
+public class TestFileProcessor2 implements ItemProcessor<String,Void> {
 
     @Override
     public Void process(String s) throws Exception {
-       log.info("data:{}",s);
+       log.info("data2:{}",s);
+       Thread.sleep(1000);
         return null;
     }
 }

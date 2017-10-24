@@ -20,9 +20,11 @@ public class BatchSchedule {
 
 
     @Autowired
-    private JobLauncher jobLauncher;
+    private JobLauncher jobLauncher2;
     @Autowired
-    private Job job;
+    private Job job1;
+    @Autowired
+    private Job job2;
 
 
 
@@ -30,7 +32,9 @@ public class BatchSchedule {
     @Scheduled(cron = "0 * * * * *")
     public void start() throws JobParametersInvalidException,
             JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
-        jobLauncher.run(job,newTsJobParams());
+        System.out.printf("job-name:%s%n",job1.getName()); //job1
+        jobLauncher2.run(job1,newTsJobParams());
+        jobLauncher2.run(job2,newTsJobParams());
     }
 
 

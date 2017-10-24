@@ -12,6 +12,8 @@
         <module>springboot-jdbc</module>
         <module>springboot-redis</module>
         <module>springboot-batch</module>
+        <module>springboot-mongo</module>
+        <module>springboot-basic</module>
     </modules>
 
 

@@ -14,12 +14,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import wang.mh.processor.TestFileProcessor;
+import wang.mh.processor.TestFileProcessor2;
 import wang.mh.reader.TestFileReader;
 
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration {
-
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
@@ -27,9 +27,8 @@ public class BatchConfiguration {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
-
     @Bean
-    public Job job(TestFileReader reader,TestFileProcessor processor) throws Exception {
+    public Job job1(TestFileReader reader,TestFileProcessor processor) throws Exception {
 
         Step step1 = stepBuilderFactory.get("step1")
                 .<String, Void>chunk(1)
@@ -44,9 +43,24 @@ public class BatchConfiguration {
                 .build();
     }
 
+    @Bean
+    public Job job2(TestFileReader reader,TestFileProcessor2 processor) throws Exception {
+
+        Step step2 = stepBuilderFactory.get("step2")
+                .<String, Void>chunk(1)
+                .reader(reader)
+                .processor(processor)
+                .build();
+
+
+        return jobBuilderFactory.get("job2")
+                .incrementer(new RunIdIncrementer())
+                .start(step2)
+                .build();
+    }
 
     @Bean
-    public JobLauncher jobLauncher(JobRepository jobRepo) {
+    public JobLauncher jobLauncher2(JobRepository jobRepo) {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(5);
         taskExecutor.setMaxPoolSize(10);

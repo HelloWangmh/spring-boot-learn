@@ -1,7 +1,6 @@
 package wang.mh.reader;
 
 import com.google.common.collect.Lists;
-import org.hsqldb.lib.ReaderInputStream;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
@@ -32,7 +31,6 @@ public class TestFileReader implements ItemReader<String>{
             datas.add(data);
         }
     }
-
 
     @Override
     public String read() throws Exception{
