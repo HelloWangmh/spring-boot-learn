@@ -7,7 +7,6 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import wang.mh.model.Person;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -39,7 +38,6 @@ public class BeanConfig {
     public Person testSpEL(@Value("#{T(java.lang.System).currentTimeMillis()}") long curr,
                            @Value("#{testPlaceHolder.name?.toUpperCase() + 'test'}")String name,
                            @Value("#{myList.size()}")int size){
-
         Person p = new Person(name);
         log.info("person通过testSpEL实例化 : {}, time : {}, myList size : {}", p, curr, size);
         return p;
