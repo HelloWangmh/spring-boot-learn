@@ -1,6 +1,8 @@
 package wang.mh;
 
-
+import com.zyx.hotel.data.fetcher.jtb.JtbSftpClient;
+import com.zyx.hotel.data.fetcher.jtb.model.csv.JtbGeneric;
+import com.zyx.hotel.data.fetcher.jtb.model.csv.JtbHotel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.*;
 import org.junit.Test;
@@ -18,15 +20,61 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CommonTest {
+public class WorkTest {
+
+    private static Map<String, String> largeAreaMap = new HashMap<>();
+
+    static {
+        largeAreaMap.put("A01", "Hokkaido");
+        largeAreaMap.put("A02", "Tohoku");
+        largeAreaMap.put("A03", "Kitakantou");
+        largeAreaMap.put("A04", "Tokyo metropolitandistrict");
+        largeAreaMap.put("A05", "Koushinetsu");
+        largeAreaMap.put("A06", "Toukai");
+        largeAreaMap.put("A07", "Hokuriku");
+        largeAreaMap.put("A08", "Kinki");
+        largeAreaMap.put("A09", "Chugoku");
+        largeAreaMap.put("A10", "Shikoku");
+        largeAreaMap.put("A11", "Kyushu");
+        largeAreaMap.put("A12", "Okinawa");
+    }
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    private  MongoTemplate mongoTemplate;
+
 
     @Test
-    public void exportExcle() throws IOException {
+    public void insertJtb(){
+        Map<String, String> areaMap = JtbSftpClient.getGenericInfo(3).stream()
+                .collect(Collectors.toMap(JtbGeneric::getId, JtbGeneric::getName));
+        Map<String, String> locationMap = JtbSftpClient.getGenericInfo(1).stream()
+                .collect(Collectors.toMap(JtbGeneric::getId, JtbGeneric::getName));
+
+        List<JtbHotel> list = JtbSftpClient.getAllHotel();
+        List<JtbHotelMongo> result = list.stream().map(jtbHotel -> {
+            JtbHotelMongo hotelMongo = new JtbHotelMongo();
+            hotelMongo.setName(jtbHotel.getName());
+            hotelMongo.setLatitude(convert(jtbHotel.getLatitude()));
+            hotelMongo.setLongitude(convert(jtbHotel.getLongitude()));
+            hotelMongo.setAddress(jtbHotel.getAddress());
+            hotelMongo.setUniqueCode(jtbHotel.getCityCode() + "-" + jtbHotel.getAccessHotelCode());
+            hotelMongo.setHotelCode(jtbHotel.getHotelCode());
+            hotelMongo.setSmallAreaName(areaMap.get(jtbHotel.getAreaName()));
+            hotelMongo.setCityCode(jtbHotel.getCityCode());
+            hotelMongo.setLargeAreaName(largeAreaMap.get(jtbHotel.getAreaCode()));
+            hotelMongo.setLocationName(locationMap.get(jtbHotel.getLocationCode()));
+            hotelMongo.setPhoneNumber(jtbHotel.getPhoneNumber());
+            return hotelMongo;
+        }).collect(Collectors.toList());
+        mongoTemplate.insert(result, JtbHotelMongo.class);
+    }
+
+    @Test
+    public void exportExcel() throws IOException {
         String path = "F:\\temp.txt";
         BufferedReader reader = Files.newBufferedReader(Paths.get(path));
         Set<String> hasMapping = reader.lines().collect(Collectors.toSet());
@@ -73,30 +121,21 @@ public class CommonTest {
     }
 
 
-
-    public static String convert(String value){
+    private  String convert(String value){
         if (StringUtils.isEmpty(value)) {
             return null;
         }
-       try {
-           value = value.substring(1);
-           String[] values = value.split("\\.");
-           Double S = Double.valueOf(values[2] + "." +values[3]) / 60;
-           Double M = (Double.valueOf(values[1]) +S) / 60;
-           return String.valueOf(Double.valueOf(values[0])  + M);
-       } catch (Exception e){
-           System.out.println(value);
-           return null;
-       }
+        try {
+            value = value.substring(1);
+            String[] values = value.split("\\.");
+            Double S = Double.valueOf(values[2] + "." +values[3]) / 60;
+            Double M = (Double.valueOf(values[1]) +S) / 60;
+            return String.valueOf(Double.valueOf(values[0])  + M);
+        } catch (Exception e){
+            System.out.println(value);
+            return null;
+        }
     }
 
-    @Test
-    public void getHotel() {
 
-        List<JtbHotelMongo> list = mongoTemplate.findAll(JtbHotelMongo.class, "jtb_hotel");
-        String result = list.stream().limit(1000)
-                .map(h -> h.getUniqueCode())
-                .collect(Collectors.joining(","));
-        System.out.println(result);
-    }
 }

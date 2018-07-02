@@ -30,7 +30,7 @@ public class MongoTest {
     private MongoTemplate mongoTemplate;
 
     @Test
-    public void testUpsert(){
+    public void upsert(){
         LocalDateTime now = LocalDateTime.now();
         Criteria criteria = Criteria.where("name").is("hui");
         Update u = new Update();
@@ -42,7 +42,7 @@ public class MongoTest {
     }
 
     @Test
-    public void testDelete(){
+    public void delete(){
         BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED,  User.class);
         Criteria c;
         c = Criteria.where("name").is("hui");
@@ -52,7 +52,7 @@ public class MongoTest {
     }
 
     @Test
-    public void testFindIn(){
+    public void findIn(){
         Criteria criteria = Criteria.where("age").in(Lists.newArrayList(17));
         List<User> users = mongoTemplate.find(new Query(criteria), User.class);
         System.out.println(users.size());
@@ -60,7 +60,7 @@ public class MongoTest {
     }
 
     @Test
-    public void testBatchUpdate(){
+    public void batchUpdate(){
         long start = System.currentTimeMillis();
         int num = 0;
         for (int i = 0; i < 50; i++) {
@@ -80,7 +80,7 @@ public class MongoTest {
     }
 
     @Test
-    public void testBatchUpdate2(){
+    public void batchUpdate2(){
         long start = System.currentTimeMillis();
 
         for (int i = 0; i < 50000; i++) {
@@ -94,7 +94,7 @@ public class MongoTest {
     }
 
     @Test
-    public void testBatchUpdate3(){
+    public void batchUpdate3(){
         long start = System.currentTimeMillis();
         int num = 0;
         for (int i = 0; i < 50; i++) {
