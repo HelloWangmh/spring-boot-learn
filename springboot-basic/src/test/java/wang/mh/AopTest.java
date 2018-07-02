@@ -14,6 +14,5 @@ public class AopTest extends BaseTest{
     @Test
     public void testAop(){
         dancePerformance.performForSecond(10);
-
     }
 }

@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 /**
  * 使用MockMvc测试
  */
-public class ControllerTest {
+public class MockMvcTest {
 
     @Test
     public void testHello() throws Exception {
