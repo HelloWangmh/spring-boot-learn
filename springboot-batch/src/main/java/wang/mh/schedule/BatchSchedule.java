@@ -1,10 +1,7 @@
 package wang.mh.schedule;
 
 
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
@@ -13,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableScheduling
@@ -27,14 +26,19 @@ public class BatchSchedule {
     private Job job2;
 
 
+    public static volatile boolean isRunning;
 
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0/10 * * * * *")
     public void start() throws JobParametersInvalidException,
-            JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
-        System.out.printf("job-name:%s%n",job1.getName()); //job1
-        jobLauncher2.run(job1,newTsJobParams());
-        jobLauncher2.run(job2,newTsJobParams());
+            JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, InterruptedException {
+        if (isRunning) {
+            System.out.println("is running, stop");
+            return;
+        }
+        isRunning = true;
+        jobLauncher2.run(job1, newTsJobParams());
+        //jobLauncher2.run(job2,newTsJobParams());
     }
 
 
