@@ -29,8 +29,7 @@ public class PerformanceAop {
      * 处理通知中的参数
      * @param second
      */
-    @Pointcut("execution(* wang.mh.service.impl.Performance.performForSecond(int)) " +
-              "&& args(second)")
+    @Pointcut("execution(* wang.mh.service.impl.Performance.performForSecond(int)) " + "&& args(second)")
     public void performanceForSecond(int second){}
 
     @Before("performanceForSecond(second)")
