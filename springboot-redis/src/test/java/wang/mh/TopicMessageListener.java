@@ -24,7 +24,7 @@ public class TopicMessageListener implements MessageListener {
         //其中key必须为stringSerializer。和redisTemplate.convertAndSend对应
         String itemValue = (String)redisTemplate.getValueSerializer().deserialize(body);
         System.out.println(itemValue);
-        String topic = (String)redisTemplate.getStringSerializer().deserialize(channel);
+        String topic = redisTemplate.getStringSerializer().deserialize(channel);
         System.out.println(topic);
     }
 }
