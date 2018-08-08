@@ -16,7 +16,7 @@ public class RedisDao {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    public Set redisTest(){
+    public Set queryAll(){
         return redisTemplate.keys("*");
     }
 }

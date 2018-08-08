@@ -20,12 +20,10 @@ public class RedisConfig {
     @Bean
     RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
                                             MessageListenerAdapter listenerAdapter) {
-
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(listenerAdapter, new PatternTopic("testChannel"));
         container.addMessageListener(listenerAdapter, new PatternTopic("testChannel2"));
-
         return container;
     }
 
