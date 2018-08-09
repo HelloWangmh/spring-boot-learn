@@ -6,7 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import wang.mh.exception.TestException;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -44,9 +48,27 @@ public class HelloController {
     @RequestMapping(value = "/hello")
     @ResponseBody
     public Map hello(String name){
+
         System.out.println(name);
         Map<String, String> map = new HashMap<>();
         map.put("name", name);
+        return map;
+    }
+
+    @RequestMapping("/checkCookie")
+    @ResponseBody
+    public Map<String, String> checkCookie(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, String> map = new HashMap<>();
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            map.put(cookie.getName(), cookie.getValue());
+        }
+        Cookie cookie = new Cookie("name", "wmh");
+        response.addCookie(cookie);
+        HttpSession session = request.getSession();
+        System.out.println(session.getId());
+
+
         return map;
     }
 
