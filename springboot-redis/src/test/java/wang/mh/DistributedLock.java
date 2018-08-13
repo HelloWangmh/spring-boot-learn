@@ -1,20 +1,14 @@
 package wang.mh;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class DistributedLock {
+public class DistributedLock extends BaseTest{
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -47,7 +41,7 @@ public class DistributedLock {
             new Thread(() -> {
                 ValueOperations<String, String> vp = redisTemplate.opsForValue();
                 Boolean success = vp.setIfAbsent(key, "1");
-                while (! success) {
+                while (!success) {  //可以放入队列中
                     success = vp.setIfAbsent(key, "1");
                 }
                 vp.getOperations().expire(key, 5, TimeUnit.SECONDS); //设置过期时间

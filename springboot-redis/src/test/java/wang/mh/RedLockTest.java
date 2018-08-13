@@ -1,17 +1,12 @@
 package wang.mh;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import wang.mh.lock.RedisLocker;
 
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class RedLockTest {
+public class RedLockTest extends BaseTest{
     @Autowired
     RedisLocker distributedLocker;
 
@@ -43,8 +38,8 @@ public class RedLockTest {
                     doTask();
                     return null;
                 });
-            }catch (Exception e){
-
+            } catch (Exception e){
+                e.printStackTrace();
             }
         }
 

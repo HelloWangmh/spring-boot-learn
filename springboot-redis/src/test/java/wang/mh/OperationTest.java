@@ -2,11 +2,8 @@ package wang.mh;
 
 import org.assertj.core.util.Lists;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.*;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.Set;
@@ -15,9 +12,8 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Created by 明辉 on 2017/7/22.
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class BasicTest {
+
+public class OperationTest extends BaseTest{
 
     @Autowired
     private StringRedisTemplate redisTemplate;
