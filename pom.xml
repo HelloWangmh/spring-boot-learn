@@ -17,7 +17,7 @@
         <module>springboot-mongo</module>
         <module>springboot-basic</module>
         <module>springboot-web</module>
-        <module>srpingboot-mybatis</module>
+        <module>springboot-mybatis</module>
         <module>springboot-aop</module>
         <module>springboot-security</module>
     </modules>
