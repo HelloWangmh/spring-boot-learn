@@ -13,18 +13,11 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-
     <dependencies>
         <!--mongo依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.zyx</groupId>
-            <artifactId>hotel-data-fetcher</artifactId>
-            <version>0.2.37-SNAPSHOT</version>
         </dependency>
 
         <dependency>
