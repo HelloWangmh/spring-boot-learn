@@ -7,7 +7,6 @@
 
     <artifactId>springboot-web</artifactId>
 
-
     <parent>
         <groupId>wang.mh</groupId>
         <artifactId>spring-boot-learn</artifactId>
