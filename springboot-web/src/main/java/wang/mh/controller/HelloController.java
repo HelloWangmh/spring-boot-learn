@@ -23,28 +23,6 @@ public class HelloController {
 
     private List<int[]> list = new ArrayList<>();
 
-    private static String data;
-    private static List<String> datas;
-
-    private volatile int i = 0;
-    static {
-
-
-    }
-
-    @RequestMapping(value = "/readLine")
-    public void readLine( HttpServletResponse response) throws IOException {
-        while (i > (datas.size() - 1)) {
-            i = i - (datas.size() - 1);
-        }
-        String data = datas.get(i);
-        response.addHeader("Cache-Control", "private");
-        PrintWriter writer = response.getWriter();
-        writer.print(data);
-    }
-
-
-
     @RequestMapping(value = "/hello")
     @ResponseBody
     public Map hello(String name){
@@ -53,31 +31,6 @@ public class HelloController {
         Map<String, String> map = new HashMap<>();
         map.put("name", name);
         return map;
-    }
-
-    @RequestMapping("/checkCookie")
-    @ResponseBody
-    public Map<String, String> checkCookie(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, String> map = new HashMap<>();
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            map.put(cookie.getName(), cookie.getValue());
-        }
-        Cookie cookie = new Cookie("name", "wmh");
-        response.addCookie(cookie);
-        HttpSession session = request.getSession();
-        System.out.println(session.getId());
-
-
-        return map;
-    }
-
-    @RequestMapping(value = "/testExc")
-    public String testExc(String name){
-        if (StringUtils.isEmpty(name)){
-            throw new TestException();
-        }
-        return name;
     }
 
     @RequestMapping(value = "/testHeap")
